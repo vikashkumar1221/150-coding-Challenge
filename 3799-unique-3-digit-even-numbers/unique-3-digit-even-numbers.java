@@ -1,46 +1,36 @@
 class Solution {
     public int totalNumbers(int[] digits) {
+        Set<Integer> set = new HashSet<>();
 
-        int[] freq = new int[10];
+        int n = digits.length;
 
-        // Frequency of each digit
-        for (int d : digits) {
-            freq[d]++;
-        }
+        for (int i = 0; i < n; i++) {
+            if (digits[i] == 0) {
+                continue;
+            }
 
-        int count = 0;
+            for (int j = 0; j < n; j++) {
+                if (j == i) {
+                    continue;
+                }
 
-        // Hundreds digit: 1-9 (0 allowed nahi)
-        for (int i = 1; i <= 9; i++) {
-
-            // Tens digit: 0-9
-            for (int j = 0; j <= 9; j++) {
-
-                // Units digit: even only
-                for (int k = 0; k <= 8; k += 2) {
-
-                    // Check required copies
-                    int[] used = new int[10];
-                    used[i]++;
-                    used[j]++;
-                    used[k]++;
-
-                    boolean possible = true;
-
-                    for (int d = 0; d <= 9; d++) {
-                        if (used[d] > freq[d]) {
-                            possible = false;
-                            break;
-                        }
+                for (int k = 0; k < n; k++) {
+                    if (k == i || k == j) {
+                        continue;
+                    }
+                    if (digits[k] % 2 != 0) {
+                        continue;
                     }
 
-                    if (possible) {
-                        count++;
-                    }
+                    int num = digits[i] * 100
+                            + digits[j] * 10
+                            + digits[k];
+
+                    set.add(num);
                 }
             }
         }
 
-        return count;
+        return set.size();
     }
 }
